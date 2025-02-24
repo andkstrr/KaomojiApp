@@ -1,87 +1,94 @@
-import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet, StatusBar, FlatList, TouchableOpacity } from 'react-native'
-import Clipboard from '@react-native-clipboard/clipboard'
-// import Icon from 'react-native-vector-icons/FontAwesome'
+import React, { useState } from 'react';
+import { 
+  View, 
+  Text,
+  Image, 
+  StyleSheet, 
+  StatusBar, 
+  FlatList, 
+  TouchableOpacity, 
+  ToastAndroid 
+} from 'react-native';
+import Clipboard from '@react-native-clipboard/clipboard';
+// import { Ionicons } from '@expo/vector-icons';
 
 const App = () => {
-  // Kaomoji
-  const [dataKaomoji, setDataKaomoji] = useState([
-    ' ˶ᵔ ᵕ ᵔ˶ ',
-    '₍ᐢ.  ̫.ᐢ₎',
-    'ദ്ദി •⩊• )',
-    'ଘ(੭ˊᵕˋ)੭',
-    '(˶ˆᗜˆ˵)',
-    '૮ ˙Ⱉ˙ ა rawr!    ',
-    '૮₍˶ •. • ⑅₎ა ♡',
-    '૮꒰˶> ᴗ <˶꒱ა',
-    '૮ ˶ᵔ ᵕ ᵔ˶ ა',
-    '⸜(｡˃ ᵕ ˂ )⸝♡',
-    '૮₍ ˃ ⤙ ˂ ₎ა',
-    
-
-  ])
+  const [dataKaomoji] = useState([
+    ' ˶ᵔ ᵕ ᵔ˶ ', '₍ᐢ.  ̫.ᐢ₎', 'ദ്ദി •⩊• )',
+    'ଘ(੭ˊᵕˋ)੭', '(˶ˆᗜˆ˵)', '૮ ˙Ⱉ˙ ა rawr!',
+    '૮₍˶ •. • ⑅₎ა ♡', '૮꒰˶> ᴗ <˶꒱ა',
+    '૮ ˶ᵔ ᵕ ᵔ˶ ა', '⸜(｡˃ ᵕ ˂ )⸝♡', '૮₍ ˃ ⤙ ˂ ₎ა', 
+    ' ˶ᵔ ᵕ ᵔ˶ ', '₍ᐢ.  ̫.ᐢ₎', 'ദ്ദി •⩊• )',
+    'ଘ(੭ˊᵕˋ)੭', '(˶ˆᗜˆ˵)', '૮ ˙Ⱉ˙ ა rawr!',
+    '૮₍˶ •. • ⑅₎ა ♡', '૮꒰˶> ᴗ <˶꒱ა',
+    '૮ ˶ᵔ ᵕ ᵔ˶ ა', '⸜(｡˃ ᵕ ˂ )⸝♡', '૮₍ ˃ ⤙ ˂ ₎ა'
+  ]);
 
   function copyKaomoji(kaomoji: string) {
     Clipboard.setString(kaomoji)
+    ToastAndroid.show('Copied to Clipboard', ToastAndroid.SHORT)
   }
 
   return (
-    <View style={ styles.container }>
-       {/* StatusBar */}
-       <StatusBar backgroundColor={'#282c34'} barStyle={'light-content'} />
-       
-       <View style={ styles.header }>
-          {/* <Icon name="rocket" size={30} color="#900" /> */}
-          <Text style={ styles.textHeader }>Kaomoji ^^</Text>
-       </View>
-      
-       {/* FlatList Kaomoji */}
-       <FlatList 
-          data={ dataKaomoji }
-          // identifikasi item unik
-          keyExtractor={(item, index) => index.toString()}
-          renderItem={({ item }) => (
-            <View style={ styles.bgKaomoji }>
-              <TouchableOpacity onPress={() => copyKaomoji(item)}>
-                <Text style={ styles.textKaomoji }>{ item }</Text>
-              </TouchableOpacity>
-            </View>
-          )}
-        />
+    <View style={styles.container}>
+      <StatusBar backgroundColor={'#4A90E2'} barStyle={'light-content'} />
+      <View style={styles.header}>
+        <Text style={styles.textHeader}>Kaomoji App ^^</Text>
+      </View>
+      <FlatList 
+        data={dataKaomoji}
+        keyExtractor={(item, index) => index.toString()}
+        renderItem={({ item }) => (
+          <View style={styles.kaomojiCard}>
+            <Text style={styles.textKaomoji}>{item}</Text>
+            <TouchableOpacity onPress={() => copyKaomoji(item)}>
+              <Image source={ require('./assets/copy.png') } style={ styles.icon } />
+            </TouchableOpacity>
+          </View>
+        )}
+      />
     </View>
-  )
-}
+  );
+};
 
-export default App
+export default App;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#21252b'
+    backgroundColor: '#F5F5F5',
   },
   header: {
-    backgroundColor: '#282c34',
+    backgroundColor: '#4A90E2',
     paddingVertical: 20,
-    paddingLeft: 20
+    alignItems: 'center',
+    elevation: 5,
   },
   textHeader: {
-    color: '#fff',
-    fontSize: 30,
+    color: '#FFF',
+    fontSize: 26,
     fontWeight: 'bold',
-    elevation: 3 // sedikit shadow
+    marginTop: 10
+  },
+  kaomojiCard: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: '#6A6AFF',
+    marginVertical: 8,
+    marginHorizontal: 20,
+    padding: 15,
+    borderRadius: 15,
+    elevation: 3,
   },
   textKaomoji: {
-    color: '#fff',
-    alignItems: 'center',
-    paddingLeft: 35,
-    fontSize: 40,
+    color: '#FFF',
+    fontSize: 22,
   },
-  bgKaomoji: {
-    paddingVertical: 20,
-    marginVertical: 10,
-    marginHorizontal: 20,
-    backgroundColor: '#282c34',
-    borderRadius: 10,
-    elevation: 3 // sedikit shadow
+  icon: {
+    width: 20,
+    height: 20,
+    marginRight: 5,
+    alignItems: 'center'
   }
-})
+});
